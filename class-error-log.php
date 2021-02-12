@@ -50,7 +50,7 @@ class error_logi {
  
       const USER_DIR   = "user_errors.log";
       const GLOBAL_DIR = 'global_errors.log';
-      const EMAIL      = 'ber34#o2.pl';
+      const EMAIL      = 'example#gmail.com';
  
      private $logi;
      private $ip;
