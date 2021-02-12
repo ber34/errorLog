@@ -162,9 +162,9 @@ class error_logi {
      $html.='<h4>Wiadomosc: '.$mesage.'</h4>';
      $html.='</html>';
         ### Wysy&#322;amy w imieniu example@o2.pl z adresu example@o2.pl
-         error_log($html, 1, self::EMAIL,"subject :lunch\nContent-Type: text/html; charset=UTF-8; Foo\nFrom: ".self::EMAIL."\n");
+         error_log($html, 1, self::EMAIL,"subject :ab\nContent-Type: text/html; charset=UTF-8; Foo\nFrom: ".self::EMAIL."\n");
     }else{
-         error_log($this->logi, 1, self::EMAIL,"subject :lunch\nContent-Type: text/html;charset=UTF-8; Foo\nFrom: ".self::EMAIL."\n");
+         error_log($this->logi, 1, self::EMAIL,"subject :ab\nContent-Type: text/html;charset=UTF-8; Foo\nFrom: ".self::EMAIL."\n");
     }
    }
 }
