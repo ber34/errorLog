@@ -47,16 +47,16 @@
  */
  
 class error_logi {
- 
-      const USER_DIR   = "user_errors.log";
+
+      const USER_DIR = "user_errors.log";
       const GLOBAL_DIR = 'global_errors.log';
-      const EMAIL      = 'example#gmail.com';
- 
+      const EMAIL = 'ber34@o2.pl';
+
      private $logi;
      private $ip;
      private $serwer;
      private $data;
-       
+    
     public function __construct($SERVER) {
         if(!empty($SERVER)){
             $this->serwer[] = $SERVER;
@@ -70,14 +70,14 @@ class error_logi {
         }
         $this->data = date('d-m-Y h:i:s');
     }
-     
+   
     private function global_ip(){
- if(filter_var($this->serwer['REMOTE_ADDR'], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE ) !== false){
-       return  $this->ip = "Prywatny zakres ".$this->serwer['REMOTE_ADDR'];
+     if(filter_var($this->serwer['REMOTE_ADDR'], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE ) === false){
+       return $this->ip = "Prywatny zakres ".$this->serwer['REMOTE_ADDR'];
      }else if(filter_var($this->serwer['REMOTE_ADDR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false){
-        return  $this->ip = "IPV4 ".$this->serwer['REMOTE_ADDR'];
+        return $this->ip = "IPV4 ".$this->serwer['REMOTE_ADDR'];
         }else if(filter_var($this->serwer['REMOTE_ADDR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false){
-        return  $this->ip = "IPV6 ".$this->serwer['REMOTE_ADDR'];
+        return $this->ip = "IPV6 ".$this->serwer['REMOTE_ADDR'];
      }
  }
     private function global_host(){
@@ -85,130 +85,86 @@ class error_logi {
          return gethostbyaddr($this->serwer['REMOTE_ADDR']);
       }
     }
-     
+   
      private function global_ip_server(){
       if(!empty($this->serwer['SERVER_ADDR'])){
          return $this->serwer['SERVER_ADDR'];
       }
     }
-     
+   
      private function global_agent(){
       if(!empty($this->serwer['HTTP_USER_AGENT'])){
          return $this->serwer['HTTP_USER_AGENT'];
       }
     }
-     
+   
      private function global_port(){
       if(!empty($this->serwer['REMOTE_PORT'])){
          return $this->serwer['REMOTE_PORT'];
       }
     }
-     
+   
     private function global_server_name(){
       if(!empty($this->serwer['SERVER_NAME'])){
          return $this->serwer['SERVER_NAME'];
       }
     }
-      ### zapisujemy logi na serwerze w podanej ścieżce ###
- public function user_logi_save($mesage,$user){
-         
-    $this->logi = "|  Data:  ".$this->data."  |  User:  ".$user." | Wiadomosc: ".$mesage." | IP: ".$this->global_ip()."| Global Port: ".$this->global_port()." | Host: ".$this->global_host()."| Agent: ".$this->global_agent()."| IP Server: ".$this->global_ip_server()." \n";
+      ### zapisujemy logi na serwerze w podanej &#347;cie&#380;ce ###
+  public function user_logi_save($mesage,$user){
+       
+    $this->logi = "| Data: ".$this->data." | User: ".$user." | Wiadomosc: ".$mesage." | IP: ".$this->global_ip()."| Global Port: ".$this->global_port()." | Host: ".$this->global_host()."| Agent: ".$this->global_agent()."| IP Server: ".$this->global_ip_server()." \n";
     error_log($this->logi, 3, self::USER_DIR);
  }
-   ### wysyłamy logi na e-mail z loginem usera ###
- public function user_logi_email($mesage, $user, $html=false){
-     
-     $this->logi = "
-|  Logi z:  ".$this->global_server_name()."
-|  User:  ".$user."
-|  Data:  ".$this->data."
-| Wiadomosc: ".$mesage."
-| IP: ".$this->global_ip()."
-| Global Port: ".$this->global_port()."
-| Host: ".$this->global_host()."
-| Agent: ".$this->global_agent()."
-| IP Server: ".$this->global_ip_server()."";
-    ### wiadomość html ###
-   if($html === true){
+   ### wysy&#322;amy logi na e-mail z loginem usera ###
+  public function user_logi_email($mesage, $user, $html=false){
+   
+     $this->logi = "<br>| Logi z: ".$this->global_server_name()."<br>| User: ".$user."<br>| Data: ".$this->data." <br>| Wiadomosc: ".$mesage." <br>| IP: ".$this->global_ip()."<br>| Global Port: ".$this->global_port()." <br>| Host: ".$this->global_host()."<br>| Agent: ".$this->global_agent()."<br>| IP Server: ".$this->global_ip_server()." <br>";
+    ### wiadomo&#347;&#263; html ###
+    if($html === true){
      $html='';
-     $html.='
-<h2>Logi z '.$this->global_server_name().'</h2>
-$html.='
-<h3>Data: '.$this->data.'</h3>
- $html.='
-<h3>User: '.$user.'</h3>
-$html.='
-<h3>IP: '.$this->global_ip().'</h3>
- $html.='
-<h3>Global Port: '.$this->global_port().'</h3>
- $html.='
-<h3>Host: '.$this->global_host().'</h3>
- $html.='
-<h3>Agent: '.$this->global_agent().'</h3>
- $html.='
-<h3>IP Server: '.$this->global_ip_server().'</h3>
-$html.='
-<h4>Wiadomosc: '.$mesage.'</h4>
- 
- 
- 
- ### Wysyłamy w imieniu ber34#o2.pl z adresu ber34#o2.pl
- 
-error_log($html, 1, self::EMAIL,"subject :lunch\nContent-Type: text/html; charset=UTF-8; Foo\nFrom:".self::EMAIL."\n");
- 
-}else{
- 
-error_log($this->logi, 1, self::EMAIL,"subject :lunch\nContent-Type: text/html;charset=UTF-8; Foo\nFrom:".self::EMAIL."\n"); } }
- 
-### zapisujemy logi na serwerze w podanej ścieżce ###
- 
-public function global_logi_save($mesage){
- 
-$this->logi = "| Data: ".$this->data." | Wiadomosc: ".$mesage." | IP: ".$this->global_ip()."| Global Port: ".$this->global_port()."
- | Host: ".$this->global_host()."|
- Agent: ".$this->global_agent()."|
- IP Server: ".$this->global_ip_server()." \n";
- 
-error_log($this->logi, 3, self::GLOBAL_DIR); }
- 
- ### wysyłamy logi na e-mail ###
- 
-public function global_logi_email($mesage, $html=false){ $this->logi = " | Logi z: ".$this->global_server_name()." |
- Data: ".$this->data." |
- Wiadomosc: ".$mesage." |
- IP: ".$this->global_ip()." |
- Global Port: ".$this->global_port()." |
- Host: ".$this->global_host()." |
- Agent: ".$this->global_agent()." |
- IP Server: ".$this->global_ip_server()." "; if($html === true){
- 
- $html='';
- $html.='
-<h2>Logi z '.$this->global_server_name().'</h2>
- $html.='
-<h3>Data: '.$this->data.'</h3>
- $html.='
-<h3>IP: '.$this->global_ip().'</h3>
- 
- $html.='
-<h3>Global Port: '.$this->global_port().'</h3>
- 
- $html.='
-<h3>Host: '.$this->global_host().'</h3>
- $html.='
-<h3>Agent: '.$this->global_agent().'</h3>
- $html.='
-<h3>IP Server: '.$this->global_ip_server().'</h3>
- $html.='
-<h4>Wiadomosc: '.$mesage.'</h4>
- 
- ### Wysyłamy w imieniu ber34#o2.pl z adresu ber34#o2.pl
- 
-    error_log($html, 1, self::EMAIL,"subject :lunch\nContent-Type: text/html; charset=UTF-8; Foo\nFrom: ".self::EMAIL."\n");
- 
-     }else{
- 
-    error_log($this->logi, 1, self::EMAIL,"subject :lunch\nContent-Type: text/html;charset=UTF-8; Foo\nFrom: ".self::EMAIL."\n"); 
-   } 
-  } 
+     $html.='<html>';
+     $html.='<h2>Logi z '.$this->global_server_name().'</h2><br>';
+     $html.='<h3>Data: '.$this->data.'</h3>';
+     $html.='<h3>User: '.$user.'</h3>';
+     $html.='<h3>IP: '.$this->global_ip().'</h3>';
+     $html.='<h3>Global Port: '.$this->global_port().'</h3>';
+         $html.='<h3>Host: '.$this->global_host().'</h3>';
+     $html.='<h3>Agent: '.$this->global_agent().'</h3>';
+     $html.='<h3>IP Server: '.$this->global_ip_server().'</h3>';
+     $html.='<h4>Wiadomosc: '.$mesage.'</h4>';
+     $html.='</html>';
+        ### Wysy&#322;amy w imieniu ber34@o2.pl z adresu ber34@o2.pl
+         error_log($html, 1, self::EMAIL,"subject :lunch\nContent-Type: text/html; charset=UTF-8; Foo\nFrom: ".self::EMAIL."\n");
+    }else{
+         error_log($this->logi, 1, self::EMAIL,"subject :lunch\nContent-Type: text/html;charset=UTF-8; Foo\nFrom: ".self::EMAIL."\n");
+    }
  }
+  ### zapisujemy logi na serwerze w podanej &#347;cie&#380;ce ###
+  public function global_logi_save($mesage){
+      
+     $this->logi = "| Data: ".$this->data." | Wiadomosc: ".$mesage." | IP: ".$this->global_ip()."| Global Port: ".$this->global_port()." | Host: ".$this->global_host()."| Agent: ".$this->global_agent()."| IP Server: ".$this->global_ip_server()." \n";
+     error_log($this->logi, 3, self::GLOBAL_DIR);
+ }
+ ### wysy&#322;amy logi na e-mail ###
+  public function global_logi_email($mesage, $html=false){
+    
+    $this->logi = "<br>| Logi z: ".$this->global_server_name()."<br>| Data: ".$this->data." <br>| Wiadomosc: ".$mesage." <br>| IP: ".$this->global_ip()."<br>| Global Port: ".$this->global_port()." <br>| Host: ".$this->global_host()."<br>| Agent: ".$this->global_agent()."<br>| IP Server: ".$this->global_ip_server()." <br>";
+     if($html === true){
+     $html='';
+     $html.='<html>';
+     $html.='<h2>Logi z '.$this->global_server_name().'</h2><br>';
+     $html.='<h3>Data: '.$this->data.'</h3>';
+     $html.='<h3>IP: '.$this->global_ip().'</h3>';
+     $html.='<h3>Global Port: '.$this->global_port().'</h3>';
+         $html.='<h3>Host: '.$this->global_host().'</h3>';
+     $html.='<h3>Agent: '.$this->global_agent().'</h3>';
+     $html.='<h3>IP Server: '.$this->global_ip_server().'</h3>';
+     $html.='<h4>Wiadomosc: '.$mesage.'</h4>';
+     $html.='</html>';
+        ### Wysy&#322;amy w imieniu example@o2.pl z adresu example@o2.pl
+         error_log($html, 1, self::EMAIL,"subject :lunch\nContent-Type: text/html; charset=UTF-8; Foo\nFrom: ".self::EMAIL."\n");
+    }else{
+         error_log($this->logi, 1, self::EMAIL,"subject :lunch\nContent-Type: text/html;charset=UTF-8; Foo\nFrom: ".self::EMAIL."\n");
+    }
+   }
+}
