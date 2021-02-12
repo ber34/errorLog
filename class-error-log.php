@@ -50,7 +50,7 @@ class error_logi {
 
       const USER_DIR = "user_errors.log";
       const GLOBAL_DIR = 'global_errors.log';
-      const EMAIL = 'ber34@o2.pl';
+      const EMAIL = 'example@o2.pl';
 
      private $logi;
      private $ip;
@@ -133,7 +133,7 @@ class error_logi {
      $html.='<h3>IP Server: '.$this->global_ip_server().'</h3>';
      $html.='<h4>Wiadomosc: '.$mesage.'</h4>';
      $html.='</html>';
-        ### Wysy&#322;amy w imieniu ber34@o2.pl z adresu ber34@o2.pl
+        ### Wysy&#322;amy w imieniu example@o2.pl z adresu example@o2.pl
          error_log($html, 1, self::EMAIL,"subject :lunch\nContent-Type: text/html; charset=UTF-8; Foo\nFrom: ".self::EMAIL."\n");
     }else{
          error_log($this->logi, 1, self::EMAIL,"subject :lunch\nContent-Type: text/html;charset=UTF-8; Foo\nFrom: ".self::EMAIL."\n");
