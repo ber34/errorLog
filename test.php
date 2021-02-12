@@ -1,3 +1,4 @@
+<?php
 include("error-logi.class.php");
  
   $logi = new error_logi($_SERVER);
