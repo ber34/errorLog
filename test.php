@@ -1,5 +1,5 @@
 <?php
-include("error-logi.class.php");
+include("class-error-log.php");
  
   $logi = new error_logi($_SERVER);
    
@@ -9,7 +9,7 @@ include("error-logi.class.php");
      $html=true;
    
   ## ustawiamy kiedy zapisujey logi uzytkownika ##
-    $logi--->user_logi_save($mesage,$user);
+    $logi->user_logi_save($mesage,$user);
      $logi->user_logi_email($mesage, $user, $html);
  
   ## ustawiamy kiedy zapisujey logi globalne ##
